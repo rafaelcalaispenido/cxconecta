@@ -1069,4 +1069,53 @@
         document.getElementById('mini-toggle').textContent = d.isPaused ? '▶' : '⏸';
 
         // Primary path: keep a timer synced to how much of the track is
-        // actua
+        // actually left, so the next track loads on schedule even if
+        // Spotify never reports a clean "paused at the end" state (it can
+        // loop the preview instead of stopping, in which case this timer
+        // is the only thing that will ever advance the playlist).
+        if (!d.isPaused && !d.isBuffering && d.duration > 0) {
+          scheduleEndTimer(d.duration - d.position);
+        }
+
+        // Secondary path: if Spotify DOES pause right at the end, jump
+        // ahead immediately instead of waiting for the timer.
+        const nearEnd = d.duration > 0 && d.position >= d.duration - 1200;
+        if (wasPlaying && d.isPaused && !d.isBuffering && nearEnd) {
+          wasPlaying = false;
+          playNextTrack();
+        }
+      });
+      tryInitialPlay();
+    });
+  });
+
+  // ---- reader modal ----
+  const overlay = document.getElementById('reader-overlay');
+  const body = document.getElementById('reader-body');
+  const titleEl = document.getElementById('reader-title');
+  const dlEl = document.getElementById('reader-download');
+
+  function openReader(id){
+    const ed = editions.find(e => e.id === id) || editions[0];
+    titleEl.textContent = ed.title;
+    dlEl.href = ed.pdf;
+    dlEl.setAttribute('download', ed.filename);
+    body.innerHTML = `<iframe src="${ed.pdf}" title="${ed.title}"></iframe>
+      <noscript><div class="reader-fallback">Seu navegador bloqueou a pré-visualização. Use o botão de download acima.</div></noscript>`;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeReader(){
+    overlay.classList.remove('open');
+    body.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-open-reader]');
+    if (trigger){ openReader(trigger.getAttribute('data-open-reader')); }
+  });
+  document.getElementById('reader-close').addEventListener('click', closeReader);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeReader(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeReader(); });
+</script>
+</body>

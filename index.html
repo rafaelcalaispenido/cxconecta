@@ -1,5 +1,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="assets/img/logo-hotmart-transparent.png">
 <title>CX Conecta — A revista de CX</title>
 <style>
   :root{
@@ -149,8 +150,22 @@
     0%,100%{transform:rotate(-10deg) translateY(0);}
     50%{transform:rotate(10deg) translateY(-2px);}
   }
-  .mini-player-embed{flex:none;width:230px;max-width:70vw;line-height:0;border-radius:8px;overflow:hidden;}
-  .mini-player-embed iframe{width:100%;display:block;border:0;}
+  /* This is a plain custom control bar, not a second Spotify embed — it
+     drives the SAME player as the "Trilha sonora" section below, so only
+     one audio stream ever plays at once. */
+  .mini-now{display:flex;align-items:center;gap:10px;flex:none;max-width:100%;}
+  .mini-ctrl{
+    background:none;border:2px solid #6b5847;color:#fff;border-radius:50%;
+    width:26px;height:26px;flex:none;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:11px;padding:0;
+  }
+  .mini-ctrl:hover{border-color:var(--yellow);color:var(--yellow);}
+  .mini-ctrl.play{width:30px;height:30px;font-size:13px;border-color:var(--yellow);}
+  .mini-track{
+    display:flex;flex-direction:column;line-height:1.25;overflow:hidden;max-width:180px;
+  }
+  .mini-track strong{font-size:12.5px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mini-track span{font-size:11px;color:#cfc3b5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
   /* ---------- header/nav ---------- */
   header.nav{
@@ -411,9 +426,9 @@
   .side-nav.collapsed .side-nav-panel{margin-right:-236px;}
   .side-nav-tab{
     background:var(--ink);color:var(--yellow);border:3px solid var(--ink);border-right:none;
-    border-radius:12px 0 0 12px;padding:18px 11px;writing-mode:vertical-rl;text-orientation:mixed;
-    font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
-    line-height:1.4;
+    border-radius:12px 0 0 12px;padding:20px 12px;writing-mode:vertical-rl;text-orientation:mixed;
+    font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;
+    text-transform:uppercase;cursor:pointer;line-height:1.5;
   }
   .side-nav-tab:hover{background:var(--orange);color:#fff;}
   .side-nav-panel{
@@ -488,7 +503,7 @@
     .container{padding:0 16px;}
     header.nav .container{flex-wrap:wrap;justify-content:center;gap:10px;padding-top:10px;padding-bottom:10px;text-align:center;}
     nav.links{width:100%;justify-content:center;gap:10px 16px;font-size:12.5px;}
-    .mini-player-embed{width:210px;}
+    .mini-track{max-width:120px;}
     .hero{padding:40px 0 28px;}
     .hero h1{font-size:38px;}
     .hero p.lead{font-size:16px;}
@@ -503,7 +518,7 @@
     .hero h1{font-size:32px;}
     .section-title{font-size:26px;}
     .shelf{padding:28px 16px;}
-    .mini-player-embed{width:100%;}
+    .mini-track{max-width:90px;}
     .badge{font-size:11px;}
   }
 </style>
@@ -617,7 +632,15 @@
         </svg>
         Tocando agora
       </span>
-      <div class="mini-player-embed" id="mini-player-embed"></div>
+      <div class="mini-now">
+        <button class="mini-ctrl" id="mini-prev" type="button" title="Faixa anterior">⏮</button>
+        <button class="mini-ctrl play" id="mini-toggle" type="button" title="Pausar/tocar">⏸</button>
+        <button class="mini-ctrl" id="mini-next" type="button" title="Próxima faixa">⏭</button>
+        <div class="mini-track">
+          <strong id="mini-track-title">—</strong>
+          <span id="mini-track-artist">—</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -925,18 +948,25 @@
 
   // ---- music player (Spotify iFrame API — official, licensed, and lets us
   // detect when a track ends so we can auto-advance to the next one) ----
+  // There is only ONE real Spotify player (mainController, in the "Trilha
+  // sonora" section). The mini bar at the top is plain HTML/CSS, not a
+  // second embed — it just shows the current track and sends play/pause/
+  // next/prev commands to that same controller. Two embeds loading the
+  // same track used to mean two audio streams playing over each other.
   let currentEd = null;
   let currentTrackIndex = 0;
   let pendingIndex = null;
   let mainController = null;
-  let miniController = null;
   let trackGeneration = 0;
   let endTimer = null;
 
-  function bothControllersReady(){ return !!(mainController && miniController); }
-
   function highlightTrack(i){
     document.querySelectorAll('#tracklist .track-btn').forEach((b, idx) => b.classList.toggle('active', idx === i));
+  }
+
+  function updateMiniTrack(t){
+    document.getElementById('mini-track-title').textContent = t ? t.title : '—';
+    document.getElementById('mini-track-artist').textContent = (currentEd && currentEd.artist) || '—';
   }
 
   // Belt-and-suspenders auto-advance: Spotify's "paused at the end" event
@@ -954,16 +984,15 @@
 
   function playTrackAt(i){
     if (!currentEd || !currentEd.playlist[i]) return;
-    if (!bothControllersReady()){ pendingIndex = i; return; }
+    if (!mainController){ pendingIndex = i; return; }
     currentTrackIndex = i;
     trackGeneration++;
     if (endTimer) { clearTimeout(endTimer); endTimer = null; }
     highlightTrack(i);
+    updateMiniTrack(currentEd.playlist[i]);
     const uri = 'spotify:track:' + currentEd.playlist[i].spotifyId;
     mainController.loadUri(uri);
     mainController.play();
-    miniController.loadUri(uri);
-    miniController.play();
   }
 
   function playNextTrack(){
@@ -972,7 +1001,7 @@
   }
 
   function tryInitialPlay(){
-    if (!bothControllersReady() || !currentEd) return;
+    if (!mainController || !currentEd) return;
     playTrackAt(pendingIndex !== null ? pendingIndex : 0);
     pendingIndex = null;
   }
@@ -993,8 +1022,17 @@
       list.appendChild(li);
     });
     document.querySelectorAll('.player-tab').forEach(t => t.classList.toggle('active', t.dataset.ed === ed.id));
-    if (bothControllersReady()) playTrackAt(0);
+    if (mainController) playTrackAt(0);
   }
+
+  document.getElementById('mini-prev').addEventListener('click', () => {
+    if (!currentEd || !currentEd.playlist.length) return;
+    playTrackAt((currentTrackIndex - 1 + currentEd.playlist.length) % currentEd.playlist.length);
+  });
+  document.getElementById('mini-next').addEventListener('click', () => playNextTrack());
+  document.getElementById('mini-toggle').addEventListener('click', () => {
+    if (mainController) mainController.togglePlay();
+  });
 
   const playerTabs = document.getElementById('player-tabs');
   const withPlaylist = editions.filter(ed => ed.playlist && ed.playlist.length);
@@ -1028,58 +1066,7 @@
         const d = e.data;
         if (!d.isPaused && !d.isBuffering) wasPlaying = true;
 
+        document.getElementById('mini-toggle').textContent = d.isPaused ? '▶' : '⏸';
+
         // Primary path: keep a timer synced to how much of the track is
-        // actually left, so the next track loads on schedule even if
-        // Spotify never reports a clean "paused at the end" state (it can
-        // loop the preview instead of stopping, in which case this timer
-        // is the only thing that will ever advance the playlist).
-        if (!d.isPaused && !d.isBuffering && d.duration > 0) {
-          scheduleEndTimer(d.duration - d.position);
-        }
-
-        // Secondary path: if Spotify DOES pause right at the end, jump
-        // ahead immediately instead of waiting for the timer.
-        const nearEnd = d.duration > 0 && d.position >= d.duration - 1200;
-        if (wasPlaying && d.isPaused && !d.isBuffering && nearEnd) {
-          wasPlaying = false;
-          playNextTrack();
-        }
-      });
-      tryInitialPlay();
-    });
-    IFrameAPI.createController(document.getElementById('mini-player-embed'), { width: '100%', height: '80' }, function(ctrl){
-      miniController = ctrl;
-      tryInitialPlay();
-    });
-  });
-
-  // ---- reader modal ----
-  const overlay = document.getElementById('reader-overlay');
-  const body = document.getElementById('reader-body');
-  const titleEl = document.getElementById('reader-title');
-  const dlEl = document.getElementById('reader-download');
-
-  function openReader(id){
-    const ed = editions.find(e => e.id === id) || editions[0];
-    titleEl.textContent = ed.title;
-    dlEl.href = ed.pdf;
-    dlEl.setAttribute('download', ed.filename);
-    body.innerHTML = `<iframe src="${ed.pdf}" title="${ed.title}"></iframe>
-      <noscript><div class="reader-fallback">Seu navegador bloqueou a pré-visualização. Use o botão de download acima.</div></noscript>`;
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeReader(){
-    overlay.classList.remove('open');
-    body.innerHTML = '';
-    document.body.style.overflow = '';
-  }
-  document.addEventListener('click', (e) => {
-    const trigger = e.target.closest('[data-open-reader]');
-    if (trigger){ openReader(trigger.getAttribute('data-open-reader')); }
-  });
-  document.getElementById('reader-close').addEventListener('click', closeReader);
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeReader(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeReader(); });
-</script>
-</body>
+        // actua

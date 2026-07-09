@@ -1,0 +1,534 @@
+<title>CX Conecta — A revista de CX</title>
+<style>
+  :root{
+    --orange:#FE4D19;
+    --orange-dark:#C43A10;
+    --cream:#FFF6E8;
+    --peach:#FBDBAA;
+    --pink:#E8486B;
+    --teal:#4F9DA6;
+    --yellow:#FFC93C;
+    --ink:#251A12;
+    --ink-soft:#5b4636;
+    --white:#FFFFFF;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  .container{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  .headline{
+    font-family:"Arial Black","Arial Narrow Bold","Haettenschweiler",Impact,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    font-weight:900;
+    line-height:1.02;
+  }
+  .script{
+    font-family:"Brush Script MT","Lucida Handwriting","Segoe Script",cursive;
+    font-weight:400;
+  }
+  .outline-orange{
+    color:var(--white);
+    -webkit-text-stroke:2px var(--orange);
+    text-stroke:2px var(--orange);
+    text-shadow:3px 3px 0 var(--orange), 3px 3px 0 var(--orange);
+    paint-order:stroke fill;
+  }
+
+  /* ---------- top ticker bar ---------- */
+  .topbar{
+    background:var(--ink);
+    color:#fff;
+    font-size:11px;
+    letter-spacing:0.6px;
+    padding:7px 0;
+  }
+  .topbar .container{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .topbar .kicker{
+    text-transform:uppercase;
+    opacity:.85;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .topbar .hm{display:flex;align-items:center;gap:6px;font-weight:700;flex:none;}
+  .topbar .hm img{width:16px;height:16px;}
+
+  /* ---------- header/nav ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,246,232,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:3px solid var(--ink);
+  }
+  header.nav .container{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:12px;padding-bottom:12px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand .flame{width:30px;height:30px;}
+  .brand .word{font-size:26px;}
+  .brand .word b{color:var(--orange);}
+  nav.links{display:flex;gap:26px;font-weight:700;font-size:14px;}
+  nav.links a{text-decoration:none;position:relative;padding:4px 2px;}
+  nav.links a:hover{color:var(--orange);}
+  .hotmart-mark{display:flex;align-items:center;gap:6px;font-weight:800;font-size:14px;color:var(--ink);}
+  .hotmart-mark img{width:20px;height:20px;}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:64px 0 40px;overflow:hidden;}
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-1;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(255,201,60,0.35), transparent 45%),
+      radial-gradient(circle at 10% 85%, rgba(232,72,107,0.18), transparent 40%);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.85fr;gap:40px;align-items:center;}
+  @media (max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--ink);color:#fff;font-weight:800;font-size:12px;
+    letter-spacing:0.8px;text-transform:uppercase;
+    padding:8px 14px;border-radius:999px;margin-bottom:18px;
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);}
+  .hero h1{font-size:52px;margin:0 0 18px;color:var(--ink);}
+  .hero h1 span{display:block;}
+  .hero p.lead{font-size:18px;color:var(--ink-soft);max-width:520px;margin:0 0 28px;}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-weight:800;font-size:15px;text-decoration:none;
+    padding:14px 24px;border-radius:12px;border:3px solid var(--ink);
+    cursor:pointer;transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-3px);}
+  .btn-primary{background:var(--orange);color:#fff;box-shadow:5px 5px 0 var(--ink);}
+  .btn-primary:hover{box-shadow:7px 7px 0 var(--ink);}
+  .btn-ghost{background:#fff;color:var(--ink);box-shadow:5px 5px 0 var(--peach);}
+  .btn-ghost:hover{box-shadow:7px 7px 0 var(--peach);}
+
+  .cover-wrap{position:relative;display:flex;justify-content:center;}
+  .cover-card{
+    width:min(340px,80%);
+    transform:rotate(4deg);
+    border:6px solid #fff;
+    border-radius:10px;
+    box-shadow:0 30px 60px -20px rgba(37,26,18,0.45), 0 0 0 3px var(--ink);
+    overflow:hidden;
+    background:#fff;
+  }
+  .cover-card img{width:100%;display:block;}
+  .sticker{
+    position:absolute;
+    background:var(--yellow);
+    color:var(--ink);
+    font-weight:900;
+    font-size:13px;
+    text-transform:uppercase;
+    padding:10px 14px;
+    border-radius:50%;
+    border:3px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    line-height:1.1;
+    box-shadow:4px 4px 0 rgba(0,0,0,0.15);
+  }
+  .sticker.s1{width:96px;height:96px;top:-10px;right:6%;transform:rotate(-12deg);}
+  .sticker.s2{width:76px;height:76px;bottom:0;left:2%;background:var(--pink);color:#fff;transform:rotate(8deg);}
+
+  /* ---------- ticker strip ---------- */
+  .ticker{
+    background:var(--orange);
+    color:#fff;
+    border-top:3px solid var(--ink);
+    border-bottom:3px solid var(--ink);
+    overflow:hidden;
+    white-space:nowrap;
+    padding:11px 0;
+  }
+  .ticker-track{display:inline-block;animation:scroll-left 26s linear infinite;font-weight:800;font-size:14px;letter-spacing:0.4px;text-transform:uppercase;}
+  .ticker-track span{margin:0 22px;}
+  .ticker-track span::after{content:"✦";margin-left:22px;opacity:.7;}
+  @keyframes scroll-left{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* ---------- section titles ---------- */
+  .section{padding:72px 0;}
+  .section-title{
+    font-size:36px;margin:0 0 8px;color:var(--ink);
+  }
+  .section-title .hl{color:var(--orange);}
+  .section-sub{color:var(--ink-soft);font-size:16px;margin:0 0 40px;max-width:620px;}
+  .eyebrow{
+    font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+    font-size:12px;color:var(--orange-dark);margin-bottom:10px;display:block;
+  }
+
+  /* ---------- inside-preview grid ---------- */
+  .preview-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:26px;
+  }
+  @media (max-width:760px){.preview-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.preview-grid{grid-template-columns:1fr;}}
+  .clip{
+    background:#fff;
+    border-radius:14px;
+    padding:10px 10px 16px;
+    border:3px solid var(--ink);
+    box-shadow:6px 6px 0 var(--peach);
+    transform:rotate(var(--r,-1deg));
+    transition:transform .2s ease;
+  }
+  .clip:nth-child(2n){--r:1.2deg;}
+  .clip:nth-child(3n){--r:-1.6deg;}
+  .clip:hover{transform:rotate(0deg) translateY(-4px);}
+  .clip .thumb{border-radius:9px;overflow:hidden;margin-bottom:12px;border:2px solid var(--ink);}
+  .clip h3{font-size:16px;margin:0 0 6px;font-family:inherit;text-transform:none;font-weight:800;}
+  .clip p{font-size:13.5px;color:var(--ink-soft);margin:0;}
+  .pin{
+    display:inline-block;width:10px;height:10px;border-radius:50%;
+    background:var(--pink);margin-right:6px;vertical-align:middle;
+  }
+
+  /* ---------- editions shelf ---------- */
+  .shelf{
+    background:var(--ink);
+    border-radius:24px;
+    padding:48px 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .shelf::before{
+    content:"";position:absolute;inset:0;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 14px);
+  }
+  .shelf-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:32px;position:relative;}
+  .shelf-head h2{color:#fff;font-size:30px;margin:0;}
+  .shelf-head h2 span{color:var(--yellow);}
+  .shelf-head p{color:#cfc3b5;margin:0;font-size:14px;}
+  #editions-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:28px;position:relative;
+  }
+  .ed-card{
+    background:var(--cream);
+    border-radius:16px;
+    padding:16px;
+    border:3px solid var(--ink);
+    box-shadow:6px 6px 0 var(--orange);
+  }
+  .ed-card .ed-cover{border-radius:10px;overflow:hidden;border:2px solid var(--ink);margin-bottom:14px;position:relative;}
+  .ed-card .ed-tag{
+    position:absolute;top:8px;left:8px;background:var(--orange);color:#fff;
+    font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;
+    padding:4px 8px;border-radius:6px;
+  }
+  .ed-card h3{margin:0 0 2px;font-size:17px;}
+  .ed-card .ed-date{font-size:12.5px;color:var(--ink-soft);margin:0 0 14px;font-weight:600;}
+  .ed-actions{display:flex;gap:8px;}
+  .ed-actions .btn{padding:10px 14px;font-size:13px;border-width:2px;box-shadow:3px 3px 0 var(--ink);flex:1;justify-content:center;}
+  .ed-actions .btn:hover{box-shadow:4px 4px 0 var(--ink);}
+  .ed-actions .btn-primary{box-shadow:3px 3px 0 var(--ink-soft);}
+
+  .ed-card.soon{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;border-style:dashed;box-shadow:none;background:transparent;
+    color:#e7dccb;min-height:260px;
+  }
+  .ed-card.soon .icon{font-size:32px;margin-bottom:10px;}
+  .ed-card.soon h3{color:#fff;}
+  .ed-card.soon p{font-size:13px;color:#cfc3b5;}
+
+  /* ---------- about ---------- */
+  .about{
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:52px;align-items:center;
+  }
+  @media (max-width:860px){.about{grid-template-columns:1fr;}}
+  .about-copy p{color:var(--ink-soft);font-size:15.5px;}
+  .credits{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+  .chip{
+    background:#fff;border:2px solid var(--ink);border-radius:999px;
+    padding:8px 16px;font-weight:700;font-size:13px;
+  }
+  .rainbow{
+    width:100%;aspect-ratio:1/0.72;position:relative;
+  }
+  .rainbow svg{width:100%;height:100%;}
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--ink);color:#e7dccb;padding:40px 0 26px;margin-top:20px;
+  }
+  footer .container{display:flex;flex-direction:column;gap:18px;}
+  footer .foot-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer .foot-brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#fff;font-size:18px;}
+  footer .foot-brand img{width:24px;height:24px;}
+  footer .foot-links{display:flex;gap:20px;font-size:13px;font-weight:600;}
+  footer .foot-links a{text-decoration:none;opacity:.85;}
+  footer .foot-links a:hover{opacity:1;color:var(--yellow);}
+  footer .fine{font-size:12px;color:#9c8f7d;border-top:1px solid #3a2f24;padding-top:16px;}
+
+  /* ---------- reader modal ---------- */
+  .reader-overlay{
+    position:fixed;inset:0;background:rgba(20,14,9,0.82);
+    display:none;align-items:center;justify-content:center;
+    z-index:200;padding:20px;
+  }
+  .reader-overlay.open{display:flex;}
+  .reader-panel{
+    background:#fff;border-radius:16px;overflow:hidden;
+    width:min(920px,100%);height:min(88vh,900px);
+    display:flex;flex-direction:column;
+    border:3px solid var(--ink);
+  }
+  .reader-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 18px;border-bottom:3px solid var(--ink);background:var(--peach);
+    gap:10px;flex-wrap:wrap;
+  }
+  .reader-bar strong{font-size:15px;}
+  .reader-bar .reader-actions{display:flex;gap:10px;align-items:center;}
+  .icon-btn{
+    border:2px solid var(--ink);background:#fff;border-radius:8px;
+    width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:16px;font-weight:800;
+  }
+  .icon-btn:hover{background:var(--orange);color:#fff;}
+  .reader-body{flex:1;background:#3a2f24;}
+  .reader-body iframe{width:100%;height:100%;border:0;}
+  .reader-fallback{
+    color:#e7dccb;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;padding:24px;text-align:center;font-size:14px;
+  }
+
+  @media (max-width:520px){
+    .hero h1{font-size:36px;}
+    .section-title{font-size:28px;}
+    .shelf{padding:32px 20px;}
+  }
+</style>
+
+<body>
+
+  <div class="topbar">
+    <div class="container">
+      <div class="kicker">CX BRASIL &nbsp;/&nbsp; GABRIELLY MUNIQUE &nbsp;/&nbsp; DEMAND GENERATION &nbsp;/&nbsp; PROJETO CX CONECTA</div>
+      <div class="hm"><img src="logo-hotmart.jpg" alt="Hotmart"> hotmart</div>
+    </div>
+  </div>
+
+  <header class="nav">
+    <div class="container">
+      <div class="brand">
+        <img class="flame" src="logo-hotmart.jpg" alt="">
+        <span class="word script">CX <b>Conecta</b></span>
+      </div>
+      <nav class="links">
+        <a href="#edicoes">Edições</a>
+        <a href="#dentro">Nesta edição</a>
+        <a href="#sobre">Sobre</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge"><span class="dot"></span> Edição Nº1 · Julho / 2026</div>
+        <h1 class="headline"><span>A revista</span><span class="outline-orange">que traz</span><span>descontração</span><span>pro seu CX.</span></h1>
+        <p class="lead">Inspirada nas revistas teen dos anos 90 (tipo Capricho), a <strong>CX Conecta</strong> traz o dia a dia de Customer Experience da Hotmart com muito humor: quiz exclusivo, horóscopo, detetives do CX e o mural das pérolas. Tudo isso pra lembrar que entender o todo muda o jeito de fazer CX.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary" data-open-reader="julho-2026">📖 Ler edição agora</button>
+          <a class="btn btn-ghost" id="hero-download" download="CX-Conecta-Julho-2026.pdf">⬇️ Baixar PDF</a>
+        </div>
+      </div>
+      <div class="cover-wrap">
+        <div class="sticker s1">Edição<br>de estreia!</div>
+        <div class="cover-card">
+          <img src="assets/img/capa-julho-2026.jpg" alt="Capa da revista CX Conecta - Julho 2026">
+        </div>
+        <div class="sticker s2">100%<br>CX</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>TESTE EXCLUSIVO: QUAL SUA ERA NO PLANTÃO?</span>
+      <span>HORÓSCOPO: QUEM VAI SEXTAR NO HORÁRIO</span>
+      <span>DETETIVES DO CX: OS BASTIDORES DO SUPORTE</span>
+      <span>MURAL DAS PÉROLAS DO CX</span>
+      <span>POR DENTRO DO DEMAND GENERATION</span>
+      <span>TRILHA SONORA DO PLANTÃO</span>
+      <span>TESTE EXCLUSIVO: QUAL SUA ERA NO PLANTÃO?</span>
+      <span>HORÓSCOPO: QUEM VAI SEXTAR NO HORÁRIO</span>
+      <span>DETETIVES DO CX: OS BASTIDORES DO SUPORTE</span>
+      <span>MURAL DAS PÉROLAS DO CX</span>
+      <span>POR DENTRO DO DEMAND GENERATION</span>
+      <span>TRILHA SONORA DO PLANTÃO</span>
+    </div>
+  </div>
+
+  <section class="section" id="dentro">
+    <div class="container">
+      <span class="eyebrow">Prévia da edição</span>
+      <h2 class="section-title">O que tem <span class="hl">dentro</span> dessa CX Conecta</h2>
+      <p class="section-sub">Um mergulho nostálgico nos anos 90, com quinzena de seções pensadas pra descontrair (e ensinar) sobre a rotina de Customer Experience.</p>
+      <div class="preview-grid">
+        <div class="clip"><div class="thumb"><img src="assets/img/preview-sandy.jpg"></div><h3><span class="pin"></span>Sandy e Junior em CX</h3><p>Como a dupla mais amada dos anos 90 resolveria os casos mais complexos de atendimento.</p></div>
+        <div class="clip"><div class="thumb"><img src="assets/img/preview-quiz.jpg"></div><h3><span class="pin"></span>Teste exclusivo</h3><p>Descubra qual música da dupla é a trilha sonora do seu plantão.</p></div>
+        <div class="clip"><div class="thumb"><img src="assets/img/preview-detetive.jpg"></div><h3><span class="pin"></span>Detetives do CX</h3><p>Os segredos dos analistas para salvar páginas de vendas e desvendar bugs misteriosos.</p></div>
+        <div class="clip"><div class="thumb"><img src="assets/img/preview-horoscopo.jpg"></div><h3><span class="pin"></span>Horóscopo</h3><p>Descubra qual signo vai sextar no horário e quem vai ficar preso no chat.</p></div>
+        <div class="clip"><div class="thumb"><img src="assets/img/preview-perolas.jpg"></div><h3><span class="pin"></span>Mural das pérolas</h3><p>As frases mais inesquecíveis ditas (ou digitadas) por quem vive o suporte todo dia.</p></div>
+        <div class="clip"><div class="thumb"><img src="assets/img/preview-trilha.jpg"></div><h3><span class="pin"></span>Trilha sonora do CX</h3><p>A playlist perfeita para cada tipo de plantão — da fila zerada ao sistema fora do ar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="edicoes">
+    <div class="container">
+      <div class="shelf">
+        <div class="shelf-head">
+          <h2>Todas as <span>edições</span></h2>
+          <p>Acompanhe aqui todas as edições da revista CX Conecta.</p>
+        </div>
+        <div id="editions-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sobre">
+    <div class="container about">
+      <div class="about-copy">
+        <span class="eyebrow">O projeto</span>
+        <h2 class="section-title" style="margin-bottom:16px;">Entender o todo <span class="hl">muda o jeito</span> de fazer CX</h2>
+        <p>CX Conecta nasceu dentro do time de Customer Experience da Hotmart como um jeito leve de aproximar squads, contar bastidores e comemorar a rotina de quem cuida da experiência de Creators e compradores todos os dias.</p>
+        <p>Cada edição mistura referências pop dos anos 90/2000 com histórias reais do time — sempre com muito humor e uma pitada de nostalgia.</p>
+        <div class="credits">
+          <span class="chip">CX Brasil</span>
+          <span class="chip">Gabrielly Munique</span>
+          <span class="chip">Demand Generation</span>
+        </div>
+      </div>
+      <div class="rainbow" aria-hidden="true">
+        <svg viewBox="0 0 300 220" fill="none">
+          <path d="M20 210 A130 130 0 0 1 280 210" stroke="#C43A10" stroke-width="26"/>
+          <path d="M46 210 A104 104 0 0 1 254 210" stroke="var(--orange)" stroke-width="26" style="stroke:#FE4D19"/>
+          <path d="M72 210 A78 78 0 0 1 228 210" stroke="#FFC93C" stroke-width="26"/>
+          <path d="M98 210 A52 52 0 0 1 202 210" stroke="#4F9DA6" stroke-width="26"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="foot-top">
+        <div class="foot-brand"><img src="logo-hotmart.jpg" alt="Hotmart"> CX Conecta</div>
+        <div class="foot-links">
+          <a href="#edicoes">Edições</a>
+          <a href="#dentro">Nesta edição</a>
+          <a href="#sobre">Sobre o projeto</a>
+        </div>
+      </div>
+      <div class="fine">CX Conecta é um projeto interno do time de Customer Experience da Hotmart · CX Brasil / Gabrielly Munique / Demand Generation. Todas as marcas e imagens citadas pertencem aos seus respectivos detentores, usadas aqui com fins de entretenimento interno.</div>
+    </div>
+  </footer>
+
+  <div class="reader-overlay" id="reader-overlay">
+    <div class="reader-panel">
+      <div class="reader-bar">
+        <strong id="reader-title">CX Conecta</strong>
+        <div class="reader-actions">
+          <a class="icon-btn" id="reader-download" download title="Baixar PDF">⬇</a>
+          <button class="icon-btn" id="reader-close" title="Fechar">✕</button>
+        </div>
+      </div>
+      <div class="reader-body" id="reader-body"></div>
+    </div>
+  </div>
+
+<script>
+  // ---- edition data: to add a future edition, append an object here ----
+  const editions = [
+    {
+      id: "julho-2026",
+      title: "CX Conecta — Julho/2026",
+      date: "Edição Nº1 · Julho de 2026",
+      tag: "Atual",
+      cover: "assets/img/capa-julho-2026.jpg",
+      pdf: "Sandy%20e%20Junior%20em%20CX%20(3)%20(2)%20(1)_compressed.pdf",
+      filename: "CX-Conecta-Julho-2026.pdf"
+    }
+  ];
+
+  const grid = document.getElementById('editions-grid');
+  editions.forEach(ed => {
+    const card = document.createElement('div');
+    card.className = 'ed-card';
+    card.innerHTML = `
+      <div class="ed-cover">
+        <span class="ed-tag">${ed.tag}</span>
+        <img src="${ed.cover}" alt="${ed.title}">
+      </div>
+      <h3>${ed.title.split('—')[1] || ed.title}</h3>
+      <p class="ed-date">${ed.date}</p>
+      <div class="ed-actions">
+        <button class="btn btn-primary" data-open-reader="${ed.id}">Ler</button>
+        <a class="btn btn-ghost" href="${ed.pdf}" download="${ed.filename}">Baixar</a>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  const soon = document.createElement('div');
+  soon.className = 'ed-card soon';
+  soon.innerHTML = `<div class="icon">🗞️</div><h3>Próxima edição</h3><p>Em breve, novidades por aqui!</p>`;
+  grid.appendChild(soon);
+
+  // hero download button points at first edition
+  document.getElementById('hero-download').href = editions[0].pdf;
+
+  // ---- reader modal ----
+  const overlay = document.getElementById('reader-overlay');
+  const body = document.getElementById('reader-body');
+  const titleEl = document.getElementById('reader-title');
+  const dlEl = document.getElementById('reader-download');
+
+  function openReader(id){
+    const ed = editions.find(e => e.id === id) || editions[0];
+    titleEl.textContent = ed.title;
+    dlEl.href = ed.pdf;
+    dlEl.setAttribute('download', ed.filename);
+    body.innerHTML = `<iframe src="${ed.pdf}" title="${ed.title}"></iframe>
+      <noscript><div class="reader-fallback">Seu navegador bloqueou a pré-visualização. Use o botão de download acima.</div></noscript>`;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeReader(){
+    overlay.classList.remove('open');
+    body.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-open-reader]');
+    if (trigger){ openReader(trigger.getAttribute('data-open-reader')); }
+  });
+  document.getElementById('reader-close').addEventListener('click', closeReader);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeReader(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeReader(); });
+</script>
+</body>

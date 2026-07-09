@@ -71,6 +71,28 @@
   @keyframes flame-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.14);}}
   .loader-title{font-size:32px;color:var(--ink);margin-bottom:20px;}
   .loader-title b{color:var(--orange);}
+  .loader-gate{display:flex;flex-direction:column;gap:10px;}
+  .loader-gate-label{
+    font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--ink-soft);
+  }
+  .loader-gate-input{
+    font-family:"Courier New",monospace;font-size:16px;letter-spacing:3px;text-align:center;
+    border:2px solid var(--ink);border-radius:8px;padding:11px 12px;background:#fff;color:var(--ink);
+  }
+  .loader-gate-input:focus{outline:none;border-color:var(--orange);}
+  .loader-gate-btn{width:100%;justify-content:center;padding:12px;font-size:14px;}
+  .loader-gate-error{
+    display:none;color:#c43a10;font-size:11.5px;font-weight:700;text-align:center;
+  }
+  .loader-gate-error.show{display:block;}
+  .loader-gate.shake{animation:gate-shake .4s;}
+  @keyframes gate-shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-8px);}
+    40%{transform:translateX(8px);}
+    60%{transform:translateX(-6px);}
+    80%{transform:translateX(6px);}
+  }
   .loader-bar{
     width:100%;height:16px;border:2px solid var(--ink);border-radius:3px;
     overflow:hidden;margin:0 0 10px;background:#fff;
@@ -112,7 +134,7 @@
 
   /* ---------- mini player (top bar) ---------- */
   .mini-player{
-    background:var(--ink);color:#fff;padding:8px 0;
+    background:var(--ink);color:#fff;padding:6px 0;
   }
   .mini-player .container{
     display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
@@ -127,7 +149,7 @@
     0%,100%{transform:rotate(-10deg) translateY(0);}
     50%{transform:rotate(10deg) translateY(-2px);}
   }
-  .mini-player-embed{flex:none;width:300px;max-width:80vw;line-height:0;border-radius:8px;overflow:hidden;}
+  .mini-player-embed{flex:none;width:230px;max-width:70vw;line-height:0;border-radius:8px;overflow:hidden;}
   .mini-player-embed iframe{width:100%;display:block;border:0;}
 
   /* ---------- header/nav ---------- */
@@ -325,6 +347,31 @@
   }
   @media (max-width:860px){.about{grid-template-columns:1fr;}}
   .about-copy p{color:var(--ink-soft);font-size:15.5px;}
+
+  /* ---------- autora ---------- */
+  .autora-grid{
+    display:grid;grid-template-columns:0.8fr 1.2fr;gap:52px;align-items:center;
+  }
+  @media (max-width:860px){.autora-grid{grid-template-columns:1fr;}}
+  .autora-photo-wrap{position:relative;display:flex;justify-content:center;}
+  .autora-photo{
+    width:min(280px,80%);aspect-ratio:1/1.1;
+    border-radius:50% / 46%;
+    border:6px solid #fff;
+    box-shadow:0 24px 50px -18px rgba(37,26,18,.45), 0 0 0 3px var(--ink);
+    overflow:hidden;background:#fff;
+    animation:autora-sway 3.4s ease-in-out infinite;
+    transform-origin:50% 100%;
+  }
+  .autora-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  @keyframes autora-sway{
+    0%,100%{transform:rotate(-4deg);}
+    50%{transform:rotate(4deg);}
+  }
+  .autora-sticker{width:100px;height:100px;top:-8px;right:4%;transform:rotate(9deg);background:var(--pink);color:#fff;}
+  .autora-copy p{color:var(--ink-soft);font-size:15.5px;margin:0 0 14px;}
+  .autora-copy p:last-child{margin-bottom:0;}
+  .autora-copy strong{color:var(--ink);}
   .credits{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
   .chip{
     background:#fff;border:2px solid var(--ink);border-radius:999px;
@@ -363,10 +410,12 @@
   }
   .side-nav.collapsed .side-nav-panel{margin-right:-236px;}
   .side-nav-tab{
-    background:var(--orange);color:#fff;border:3px solid var(--ink);border-right:none;
-    border-radius:12px 0 0 12px;padding:14px 8px;writing-mode:vertical-rl;text-orientation:mixed;
-    font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;
+    background:var(--ink);color:var(--yellow);border:3px solid var(--ink);border-right:none;
+    border-radius:12px 0 0 12px;padding:18px 11px;writing-mode:vertical-rl;text-orientation:mixed;
+    font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+    line-height:1.4;
   }
+  .side-nav-tab:hover{background:var(--orange);color:#fff;}
   .side-nav-panel{
     background:#fff;border:3px solid var(--ink);border-right:none;border-radius:16px 0 0 16px;
     padding:16px;width:236px;max-height:min(64vh,520px);overflow-y:auto;
@@ -439,7 +488,7 @@
     .container{padding:0 16px;}
     header.nav .container{flex-wrap:wrap;justify-content:center;gap:10px;padding-top:10px;padding-bottom:10px;text-align:center;}
     nav.links{width:100%;justify-content:center;gap:10px 16px;font-size:12.5px;}
-    .mini-player-embed{width:260px;}
+    .mini-player-embed{width:210px;}
     .hero{padding:40px 0 28px;}
     .hero h1{font-size:38px;}
     .hero p.lead{font-size:16px;}
@@ -469,40 +518,76 @@
     <div class="loader-window">
       <img class="loader-flame" src="assets/img/logo-hotmart-transparent.png" alt="">
       <div class="loader-title script">CX <b>Conecta</b></div>
-      <div class="loader-bar"><div class="loader-bar-fill" id="loader-fill"></div></div>
-      <div class="loader-row">
-        <span class="loader-lcd" id="loader-pct">00%</span>
-        <span class="loader-blink">carregando edição<span class="cursor">_</span></span>
+
+      <form class="loader-gate" id="loader-gate">
+        <label class="loader-gate-label" for="loader-password">Acesso restrito · digite a senha</label>
+        <input class="loader-gate-input" id="loader-password" type="password" autocomplete="off" placeholder="••••••••••••">
+        <button class="btn btn-primary loader-gate-btn" type="submit">Entrar</button>
+        <div class="loader-gate-error" id="loader-gate-error">Senha incorreta. Tenta de novo!</div>
+      </form>
+
+      <div class="loader-progress" id="loader-progress" style="display:none;">
+        <div class="loader-bar"><div class="loader-bar-fill" id="loader-fill"></div></div>
+        <div class="loader-row">
+          <span class="loader-lcd" id="loader-pct">00%</span>
+          <span class="loader-blink">carregando edição<span class="cursor">_</span></span>
+        </div>
       </div>
     </div>
   </div>
   <script>
     (function(){
+      var PASSWORD = 'CxConecta@2026';
       var loader = document.getElementById('page-loader');
+      var gate = document.getElementById('loader-gate');
+      var gateError = document.getElementById('loader-gate-error');
+      var passwordInput = document.getElementById('loader-password');
+      var progressWrap = document.getElementById('loader-progress');
       var fill = document.getElementById('loader-fill');
       var pct = document.getElementById('loader-pct');
-      var duration = 5000;
-      var start = performance.now();
-      var done = false;
-      function finish(){
-        if (done) return;
-        done = true;
-        fill.style.width = '100%';
-        pct.textContent = '100%';
-        loader.classList.add('hide');
-        document.body.classList.remove('loading');
-        setTimeout(function(){ loader.style.display = 'none'; }, 650);
+      var duration = 2200;
+
+      passwordInput.focus();
+
+      gate.addEventListener('submit', function(e){
+        e.preventDefault();
+        if (passwordInput.value === PASSWORD) {
+          gate.style.display = 'none';
+          progressWrap.style.display = 'block';
+          startLoading();
+        } else {
+          gateError.classList.add('show');
+          gate.classList.remove('shake');
+          void gate.offsetWidth;
+          gate.classList.add('shake');
+          passwordInput.value = '';
+          passwordInput.focus();
+        }
+      });
+
+      function startLoading(){
+        var start = performance.now();
+        var done = false;
+        function finish(){
+          if (done) return;
+          done = true;
+          fill.style.width = '100%';
+          pct.textContent = '100%';
+          loader.classList.add('hide');
+          document.body.classList.remove('loading');
+          setTimeout(function(){ loader.style.display = 'none'; }, 650);
+        }
+        function tick(now){
+          if (done) return;
+          var progress = Math.min((now - start) / duration, 1);
+          var pctVal = Math.round(progress * 100);
+          fill.style.width = pctVal + '%';
+          pct.textContent = (pctVal < 10 ? '0' : '') + pctVal + '%';
+          if (progress < 1) requestAnimationFrame(tick);
+          else finish();
+        }
+        requestAnimationFrame(tick);
       }
-      function tick(now){
-        if (done) return;
-        var progress = Math.min((now - start) / duration, 1);
-        var pctVal = Math.round(progress * 100);
-        fill.style.width = pctVal + '%';
-        pct.textContent = (pctVal < 10 ? '0' : '') + pctVal + '%';
-        if (progress < 1) requestAnimationFrame(tick);
-        else finish();
-      }
-      requestAnimationFrame(tick);
     })();
   </script>
 
@@ -547,6 +632,7 @@
         <a href="#dentro">Nesta edição</a>
         <a href="#trilha">Trilha sonora</a>
         <a href="#sobre">Sobre</a>
+        <a href="#autora">Autora</a>
       </nav>
     </div>
   </header>
@@ -642,6 +728,25 @@
     </div>
   </section>
 
+  <section class="section" id="autora">
+    <div class="container autora-grid">
+      <div class="autora-photo-wrap">
+        <div class="autora-photo">
+          <img src="assets/img/autora-gaby.jpg" alt="Gaby, autora da CX Conecta">
+        </div>
+        <div class="sticker autora-sticker">Editora-<br>chefe</div>
+      </div>
+      <div class="autora-copy">
+        <span class="eyebrow">Quem escreve</span>
+        <h2 class="section-title" style="margin-bottom:16px;">Autora</h2>
+        <p>Prazer, sou a Gaby! Moro em "Tão, Tão Distante" (mais conhecida como região do Vale do Aço). Sou de CX e estou na Hotmart há quase 1 ano — uuhuu! Sou super gente boa e amo um bom bate-papo, então se me vir no chat, me dá um oi! Minha missão é ajudar e fazer a diferença no dia a dia de alguém.</p>
+        <p>E pra quem está se perguntando de onde surgiu a Revista CX, eu garanto: não foi das vozes da minha cabeça! Até porque a gente está meio brigado e elas não estão colaborando muito ultimamente, kkkk.</p>
+        <p>A gente em CX vive na correria, mas a revista surgiu pra nos lembrar que por trás de todo número tem uma pessoa. Ela é a nossa ferramenta pra <strong>humanizar a rotina</strong>, conectar os times e trocar dicas reais de como encantar o cliente na prática. A CX Conecta nasceu daquela curiosidade saudável de saber o que acontece no dia a dia dos outros times, e entender como o nosso trabalho impacta o deles (e vice-versa!). E pra trazer os dados direto da fonte, entrevistamos os nossos próprios agentes, que abriram a caixa-preta da rotina pra mostrar como a mágica acontece.</p>
+        <p>No fim das contas, o grande desejo dessa revista é trazer de volta aquele quentinho no coração na hora de atender — nos lembrando todos os dias que <strong>entender o todo muda o jeito de fazer CX</strong>!</p>
+      </div>
+    </div>
+  </section>
+
   <div class="side-nav collapsed" id="side-nav">
     <button class="side-nav-tab" id="side-nav-tab" type="button">Edições por mês</button>
     <div class="side-nav-panel">
@@ -659,6 +764,7 @@
           <a href="#dentro">Nesta edição</a>
           <a href="#trilha">Trilha sonora</a>
           <a href="#sobre">Sobre o projeto</a>
+          <a href="#autora">Autora</a>
         </div>
       </div>
       <div class="fine">CX Conecta é um projeto interno do time de Customer Experience da Hotmart. Todas as marcas e imagens citadas pertencem aos seus respectivos detentores, usadas aqui com fins de entretenimento interno.</div>
@@ -824,6 +930,8 @@
   let pendingIndex = null;
   let mainController = null;
   let miniController = null;
+  let trackGeneration = 0;
+  let endTimer = null;
 
   function bothControllersReady(){ return !!(mainController && miniController); }
 
@@ -831,10 +939,25 @@
     document.querySelectorAll('#tracklist .track-btn').forEach((b, idx) => b.classList.toggle('active', idx === i));
   }
 
+  // Belt-and-suspenders auto-advance: Spotify's "paused at the end" event
+  // isn't always reliable, so alongside listening for it, we keep a timer
+  // synced to the track's own reported duration/position and force the
+  // next track once that time is up — this is what actually guarantees
+  // the playlist advances instead of stalling or looping the same song.
+  function scheduleEndTimer(remainingMs){
+    if (endTimer) clearTimeout(endTimer);
+    const myGen = trackGeneration;
+    endTimer = setTimeout(() => {
+      if (myGen === trackGeneration) playNextTrack();
+    }, Math.max(remainingMs, 300) + 800);
+  }
+
   function playTrackAt(i){
     if (!currentEd || !currentEd.playlist[i]) return;
     if (!bothControllersReady()){ pendingIndex = i; return; }
     currentTrackIndex = i;
+    trackGeneration++;
+    if (endTimer) { clearTimeout(endTimer); endTimer = null; }
     highlightTrack(i);
     const uri = 'spotify:track:' + currentEd.playlist[i].spotifyId;
     mainController.loadUri(uri);
@@ -903,8 +1026,21 @@
       let wasPlaying = false;
       ctrl.addListener('playback_update', e => {
         const d = e.data;
-        if (!d.isPaused) wasPlaying = true;
-        if (wasPlaying && d.isPaused && d.position < 300 && d.duration > 0) {
+        if (!d.isPaused && !d.isBuffering) wasPlaying = true;
+
+        // Primary path: keep a timer synced to how much of the track is
+        // actually left, so the next track loads on schedule even if
+        // Spotify never reports a clean "paused at the end" state (it can
+        // loop the preview instead of stopping, in which case this timer
+        // is the only thing that will ever advance the playlist).
+        if (!d.isPaused && !d.isBuffering && d.duration > 0) {
+          scheduleEndTimer(d.duration - d.position);
+        }
+
+        // Secondary path: if Spotify DOES pause right at the end, jump
+        // ahead immediately instead of waiting for the timer.
+        const nearEnd = d.duration > 0 && d.position >= d.duration - 1200;
+        if (wasPlaying && d.isPaused && !d.isBuffering && nearEnd) {
           wasPlaying = false;
           playNextTrack();
         }

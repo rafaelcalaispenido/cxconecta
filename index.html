@@ -1,3 +1,5 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CX Conecta — A revista de CX</title>
 <style>
   :root{
@@ -30,15 +32,15 @@
   body.loading{overflow:hidden;}
   .loader{
     position:fixed;inset:0;z-index:500;
-    background:radial-gradient(circle at 50% 35%, #4a2c17, var(--ink) 70%);
+    background:radial-gradient(circle at 50% 35%, var(--peach), var(--cream) 70%);
     display:flex;align-items:center;justify-content:center;
     transition:opacity .6s ease, visibility .6s ease;
   }
   .loader.hide{opacity:0;visibility:hidden;pointer-events:none;}
   .loader-scanlines{
     position:absolute;inset:0;pointer-events:none;
-    background:repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px);
-    mix-blend-mode:overlay;
+    background:repeating-linear-gradient(0deg, rgba(37,26,18,.06) 0 1px, transparent 1px 3px);
+    mix-blend-mode:multiply;
     animation:scan-move 6s linear infinite;
   }
   @keyframes scan-move{from{background-position:0 0;}to{background-position:0 120px;}}
@@ -88,11 +90,6 @@
   .loader-blink{font-family:"Courier New",monospace;font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.5px;}
   .cursor{animation:blink 1s step-end infinite;}
   @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-  .loader-skip{
-    background:none;border:none;color:var(--ink-soft);font-size:11.5px;font-weight:700;
-    text-decoration:underline;cursor:pointer;padding:0;
-  }
-  .loader-skip:hover{color:var(--orange);}
 
   .headline{
     font-family:"Arial Black","Arial Narrow Bold","Haettenschweiler",Impact,sans-serif;
@@ -118,18 +115,20 @@
     background:var(--ink);color:#fff;padding:8px 0;
   }
   .mini-player .container{
-    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
   }
   .mini-player-label{
+    display:inline-flex;align-items:center;gap:7px;
     font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.6px;
     white-space:nowrap;color:var(--yellow);flex:none;
   }
-  .mini-player-embed{flex:1;min-width:220px;max-width:420px;line-height:0;border-radius:8px;overflow:hidden;}
-  .mini-player-embed iframe{width:100%;display:block;border:0;}
-  .mini-player-more{
-    margin-left:auto;font-size:12px;font-weight:700;text-decoration:none;color:#cfc3b5;white-space:nowrap;flex:none;
+  .note-svg{width:20px;height:20px;color:var(--yellow);flex:none;transform-origin:50% 85%;animation:note-dance .85s ease-in-out infinite;}
+  @keyframes note-dance{
+    0%,100%{transform:rotate(-10deg) translateY(0);}
+    50%{transform:rotate(10deg) translateY(-2px);}
   }
-  .mini-player-more:hover{color:var(--yellow);}
+  .mini-player-embed{flex:none;width:300px;max-width:80vw;line-height:0;border-radius:8px;overflow:hidden;}
+  .mini-player-embed iframe{width:100%;display:block;border:0;}
 
   /* ---------- header/nav ---------- */
   header.nav{
@@ -187,6 +186,7 @@
 
   .cover-wrap{position:relative;display:flex;justify-content:center;}
   .cover-card{
+    position:relative;z-index:1;
     width:min(340px,80%);
     transform:rotate(4deg);
     border:6px solid #fff;
@@ -197,7 +197,7 @@
   }
   .cover-card img{width:100%;display:block;}
   .sticker{
-    position:absolute;
+    position:absolute;z-index:2;
     background:var(--yellow);
     color:var(--ink);
     font-weight:900;
@@ -356,6 +356,37 @@
   .track-btn.active{background:var(--orange);color:#fff;}
   .track-btn .n{opacity:.6;font-weight:800;}
 
+  /* ---------- side nav: browse editions by month ---------- */
+  .side-nav{
+    position:fixed;top:50%;right:0;transform:translateY(-50%);
+    z-index:60;display:flex;align-items:center;
+  }
+  .side-nav.collapsed .side-nav-panel{margin-right:-236px;}
+  .side-nav-tab{
+    background:var(--orange);color:#fff;border:3px solid var(--ink);border-right:none;
+    border-radius:12px 0 0 12px;padding:14px 8px;writing-mode:vertical-rl;text-orientation:mixed;
+    font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;
+  }
+  .side-nav-panel{
+    background:#fff;border:3px solid var(--ink);border-right:none;border-radius:16px 0 0 16px;
+    padding:16px;width:236px;max-height:min(64vh,520px);overflow-y:auto;
+    box-shadow:-6px 6px 0 var(--peach);transition:margin-right .25s ease;
+  }
+  .side-nav-title{display:block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--orange-dark);margin-bottom:10px;}
+  .side-nav-item{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    background:var(--cream);border:2px solid var(--ink);border-radius:10px;
+    padding:8px;margin-bottom:8px;cursor:pointer;font-family:inherit;
+  }
+  .side-nav-item:last-child{margin-bottom:0;}
+  .side-nav-item:hover{background:var(--peach);}
+  .side-nav-item.is-current{background:var(--orange);border-color:var(--ink);}
+  .side-nav-item.is-current .m,.side-nav-item.is-current .m small{color:#fff;}
+  .side-nav-item.is-viewing{box-shadow:0 0 0 3px var(--ink) inset;}
+  .side-nav-item img{width:34px;height:46px;object-fit:cover;border-radius:4px;border:2px solid var(--ink);flex:none;}
+  .side-nav-item .m{display:block;font-weight:800;font-size:13px;color:var(--ink);}
+  .side-nav-item .m small{display:block;font-weight:600;color:var(--ink-soft);font-size:10.5px;}
+  @media (max-width:900px){ .side-nav{display:none;} }
 
   /* ---------- footer ---------- */
   footer{
@@ -365,7 +396,7 @@
   footer .foot-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
   footer .foot-brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#fff;font-size:18px;}
   footer .foot-brand img{width:24px;height:24px;}
-  footer .foot-links{display:flex;gap:20px;font-size:13px;font-weight:600;}
+  footer .foot-links{display:flex;flex-wrap:wrap;gap:14px 20px;font-size:13px;font-weight:600;}
   footer .foot-links a{text-decoration:none;opacity:.85;}
   footer .foot-links a:hover{opacity:1;color:var(--yellow);}
   footer .fine{font-size:12px;color:#9c8f7d;border-top:1px solid #3a2f24;padding-top:16px;}
@@ -403,10 +434,28 @@
     gap:14px;padding:24px;text-align:center;font-size:14px;
   }
 
+  /* ---------- mobile ---------- */
+  @media (max-width:680px){
+    .container{padding:0 16px;}
+    header.nav .container{flex-wrap:wrap;justify-content:center;gap:10px;padding-top:10px;padding-bottom:10px;text-align:center;}
+    nav.links{width:100%;justify-content:center;gap:10px 16px;font-size:12.5px;}
+    .mini-player-embed{width:260px;}
+    .hero{padding:40px 0 28px;}
+    .hero h1{font-size:38px;}
+    .hero p.lead{font-size:16px;}
+    .cta-row .btn{flex:1 1 auto;justify-content:center;}
+    .section{padding:48px 0;}
+    .player{padding:18px;}
+    .loader-window{padding:36px 26px 24px;}
+    .loader-title{font-size:26px;}
+  }
+
   @media (max-width:520px){
-    .hero h1{font-size:36px;}
-    .section-title{font-size:28px;}
-    .shelf{padding:32px 20px;}
+    .hero h1{font-size:32px;}
+    .section-title{font-size:26px;}
+    .shelf{padding:28px 16px;}
+    .mini-player-embed{width:100%;}
+    .badge{font-size:11px;}
   }
 </style>
 
@@ -425,7 +474,6 @@
         <span class="loader-lcd" id="loader-pct">00%</span>
         <span class="loader-blink">carregando edição<span class="cursor">_</span></span>
       </div>
-      <button class="loader-skip" id="loader-skip" type="button">pular »</button>
     </div>
   </div>
   <script>
@@ -433,7 +481,6 @@
       var loader = document.getElementById('page-loader');
       var fill = document.getElementById('loader-fill');
       var pct = document.getElementById('loader-pct');
-      var skip = document.getElementById('loader-skip');
       var duration = 5000;
       var start = performance.now();
       var done = false;
@@ -456,15 +503,36 @@
         else finish();
       }
       requestAnimationFrame(tick);
-      skip.addEventListener('click', finish);
     })();
   </script>
 
+  <script>
+    // Loaded early so the Spotify iFrame API (loaded async below) always has
+    // somewhere to report to, regardless of which script finishes first.
+    window.__spotifyReadyCallbacks = [];
+    window.onSpotifyIframeApiReady = function(IFrameAPI){
+      window.__spotifyAPI = IFrameAPI;
+      window.__spotifyReadyCallbacks.forEach(function(cb){ cb(IFrameAPI); });
+      window.__spotifyReadyCallbacks = [];
+    };
+    window.whenSpotifyReady = function(cb){
+      if (window.__spotifyAPI) cb(window.__spotifyAPI);
+      else window.__spotifyReadyCallbacks.push(cb);
+    };
+  </script>
+  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+
   <div class="mini-player" id="mini-player" style="display:none;">
     <div class="container">
-      <span class="mini-player-label">🎵 Tocando agora</span>
+      <span class="mini-player-label">
+        <svg class="note-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="6" cy="18" r="3" fill="currentColor"/>
+          <circle cx="16" cy="16" r="3" fill="currentColor"/>
+          <path d="M9 18V6l10-2v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Tocando agora
+      </span>
       <div class="mini-player-embed" id="mini-player-embed"></div>
-      <a class="mini-player-more" href="#trilha">Trilha completa da edição »</a>
     </div>
   </div>
 
@@ -486,26 +554,26 @@
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <div class="badge"><span class="dot"></span> Edição Nº1 · Julho / 2026</div>
+        <div class="badge"><span class="dot"></span> <span id="edition-badge-text">Edição Nº1 · Julho / 2026</span></div>
         <h1 class="headline"><span>A revista</span><span class="outline-orange">que traz</span><span>descontração</span><span>pro seu CX.</span></h1>
-        <p class="lead">Inspirada nas revistas teen dos anos 90, a <strong>CX Conecta</strong> traz o dia a dia de Customer Experience da Hotmart com muito humor: quiz exclusivo, horóscopo, detetives do CX e o mural das pérolas. Tudo isso pra lembrar que entender o todo muda o jeito de fazer CX.</p>
+        <p class="lead" id="edition-lead">Inspirada nas revistas teen dos anos 90, a <strong>CX Conecta</strong> traz o dia a dia de Customer Experience da Hotmart com muito humor: quiz exclusivo, horóscopo, detetives do CX e o mural das pérolas. Tudo isso pra lembrar que entender o todo muda o jeito de fazer CX.</p>
         <div class="cta-row">
-          <button class="btn btn-primary" data-open-reader="julho-2026">📖 Ler edição agora</button>
-          <a class="btn btn-ghost" id="hero-download" download="CX-Conecta-Julho-2026.pdf">⬇️ Baixar PDF</a>
+          <button class="btn btn-primary" id="hero-read-btn" data-open-reader="julho-2026">Ler edição agora</button>
+          <a class="btn btn-ghost" id="hero-download" download="CX-Conecta-Julho-2026.pdf">Baixar PDF</a>
         </div>
       </div>
       <div class="cover-wrap">
-        <div class="sticker s1">Edição<br>de estreia!</div>
+        <div class="sticker s1" id="sticker-top">Edição<br>de estreia!</div>
         <div class="cover-card">
-          <img src="assets/img/capa-julho-2026.jpg" alt="Capa da revista CX Conecta - Julho 2026">
+          <img id="hero-cover" src="assets/img/capa-julho-2026.jpg" alt="Capa da revista CX Conecta - Julho 2026">
         </div>
-        <div class="sticker s2">100%<br>CX</div>
+        <div class="sticker s2" id="sticker-bottom">100%<br>CX</div>
       </div>
     </div>
   </section>
 
   <div class="ticker">
-    <div class="ticker-track">
+    <div class="ticker-track" id="ticker-track">
       <span>TESTE EXCLUSIVO: QUAL SUA ERA NO PLANTÃO?</span>
       <span>HORÓSCOPO: QUEM VAI SEXTAR NO HORÁRIO</span>
       <span>DETETIVES DO CX: OS BASTIDORES DO SUPORTE</span>
@@ -523,17 +591,10 @@
 
   <section class="section" id="dentro">
     <div class="container">
-      <span class="eyebrow">Prévia da edição</span>
-      <h2 class="section-title">O que tem <span class="hl">dentro</span> dessa CX Conecta</h2>
-      <p class="section-sub">Um mergulho nostálgico nos anos 90, com quinzena de seções pensadas pra descontrair (e ensinar) sobre a rotina de Customer Experience.</p>
-      <div class="preview-grid">
-        <div class="clip"><div class="thumb"><img src="assets/img/preview-sandy.jpg"></div><h3><span class="pin"></span>Sandy e Junior em CX</h3><p>Como a dupla mais amada dos anos 90 resolveria os casos mais complexos de atendimento.</p></div>
-        <div class="clip"><div class="thumb"><img src="assets/img/preview-quiz.jpg"></div><h3><span class="pin"></span>Teste exclusivo</h3><p>Descubra qual música da dupla é a trilha sonora do seu plantão.</p></div>
-        <div class="clip"><div class="thumb"><img src="assets/img/preview-detetive.jpg"></div><h3><span class="pin"></span>Detetives do CX</h3><p>Os segredos dos analistas para salvar páginas de vendas e desvendar bugs misteriosos.</p></div>
-        <div class="clip"><div class="thumb"><img src="assets/img/preview-horoscopo.jpg"></div><h3><span class="pin"></span>Horóscopo</h3><p>Descubra qual signo vai sextar no horário e quem vai ficar preso no chat.</p></div>
-        <div class="clip"><div class="thumb"><img src="assets/img/preview-perolas.jpg"></div><h3><span class="pin"></span>Mural das pérolas</h3><p>As frases mais inesquecíveis ditas (ou digitadas) por quem vive o suporte todo dia.</p></div>
-        <div class="clip"><div class="thumb"><img src="assets/img/preview-trilha.jpg"></div><h3><span class="pin"></span>Trilha sonora do CX</h3><p>A playlist perfeita para cada tipo de plantão — da fila zerada ao sistema fora do ar.</p></div>
-      </div>
+      <span class="eyebrow" id="preview-eyebrow">Prévia da edição</span>
+      <h2 class="section-title" id="preview-title">O que tem <span class="hl">dentro</span> dessa CX Conecta</h2>
+      <p class="section-sub" id="preview-sub">Um mergulho nostálgico nos anos 90, com quinzena de seções pensadas pra descontrair (e ensinar) sobre a rotina de Customer Experience.</p>
+      <div class="preview-grid" id="preview-grid"></div>
     </div>
   </section>
 
@@ -581,6 +642,14 @@
     </div>
   </section>
 
+  <div class="side-nav collapsed" id="side-nav">
+    <button class="side-nav-tab" id="side-nav-tab" type="button">Edições por mês</button>
+    <div class="side-nav-panel">
+      <span class="side-nav-title">Edições por mês</span>
+      <div id="side-nav-list"></div>
+    </div>
+  </div>
+
   <footer>
     <div class="container">
       <div class="foot-top">
@@ -611,9 +680,11 @@
 
 <script>
   // ---- edition data: to add a future edition, append an object here ----
-  // "current: true" marks the edition shown in the side widget (the latest launch).
-  // "artist"/"playlist" define the songs the music player plays for that edition —
-  // swap them for the artist/theme of each new edition.
+  // Every field on an edition feeds the page — clicking it in the side nav
+  // (or the "Ler"/cover click anywhere) fully re-renders the hero, the
+  // ticker, the preview grid and the music player with THIS edition's
+  // content, so each month's launch page stays intact and revisitable
+  // forever, even after a newer edition becomes the featured one.
   const editions = [
     {
       id: "julho-2026",
@@ -624,6 +695,33 @@
       cover: "assets/img/capa-julho-2026.jpg",
       pdf: "Sandy%20e%20Junior%20em%20CX%20(3)%20(2)%20(1)_compressed.pdf",
       filename: "CX-Conecta-Julho-2026.pdf",
+
+      badge: "Edição Nº1 · Julho / 2026",
+      lead: "Inspirada nas revistas teen dos anos 90, a <strong>CX Conecta</strong> traz o dia a dia de Customer Experience da Hotmart com muito humor: quiz exclusivo, horóscopo, detetives do CX e o mural das pérolas. Tudo isso pra lembrar que entender o todo muda o jeito de fazer CX.",
+      stickerTop: "Edição<br>de estreia!",
+      stickerBottom: "100%<br>CX",
+
+      ticker: [
+        "TESTE EXCLUSIVO: QUAL SUA ERA NO PLANTÃO?",
+        "HORÓSCOPO: QUEM VAI SEXTAR NO HORÁRIO",
+        "DETETIVES DO CX: OS BASTIDORES DO SUPORTE",
+        "MURAL DAS PÉROLAS DO CX",
+        "POR DENTRO DO DEMAND GENERATION",
+        "TRILHA SONORA DO PLANTÃO"
+      ],
+
+      previewEyebrow: "Prévia da edição",
+      previewTitle: "O que tem <span class=\"hl\">dentro</span> dessa CX Conecta",
+      previewSub: "Um mergulho nostálgico nos anos 90, com uma seleção de seções pensadas pra descontrair (e ensinar) sobre a rotina de Customer Experience.",
+      preview: [
+        { img: "assets/img/preview-sandy.jpg", title: "Sandy e Junior em CX", desc: "Como a dupla mais amada dos anos 90 resolveria os casos mais complexos de atendimento." },
+        { img: "assets/img/preview-quiz.jpg", title: "Teste exclusivo", desc: "Descubra qual música da dupla é a trilha sonora do seu plantão." },
+        { img: "assets/img/preview-detetive.jpg", title: "Detetives do CX", desc: "Os segredos dos analistas para salvar páginas de vendas e desvendar bugs misteriosos." },
+        { img: "assets/img/preview-horoscopo.jpg", title: "Horóscopo", desc: "Descubra qual signo vai sextar no horário e quem vai ficar preso no chat." },
+        { img: "assets/img/preview-perolas.jpg", title: "Mural das pérolas", desc: "As frases mais inesquecíveis ditas (ou digitadas) por quem vive o suporte todo dia." },
+        { img: "assets/img/preview-trilha.jpg", title: "Trilha sonora do CX", desc: "A playlist perfeita para cada tipo de plantão — da fila zerada ao sistema fora do ar." }
+      ],
+
       artist: "Sandy & Junior",
       playlist: [
         { title: "A Lenda", spotifyId: "1mBaOJ4OPDqJBMp0luG7Ej" },
@@ -658,19 +756,107 @@
   soon.innerHTML = `<div class="icon">🗞️</div><h3>Próxima edição</h3><p>Em breve, novidades por aqui!</p>`;
   grid.appendChild(soon);
 
-  // hero download button points at first edition
-  document.getElementById('hero-download').href = editions[0].pdf;
+  // ---- render a full edition "page" into the homepage: hero, sticker
+  // callouts, ticker headlines, preview grid and the music player all
+  // switch to that edition's own content. This is what makes each month's
+  // launch page a permanent, revisitable thing instead of a one-shot
+  // homepage that gets overwritten. ----
+  function renderEdition(ed){
+    document.getElementById('edition-badge-text').textContent = ed.badge;
+    document.getElementById('edition-lead').innerHTML = ed.lead;
+    document.getElementById('hero-cover').src = ed.cover;
+    document.getElementById('hero-cover').alt = ed.title;
+    document.getElementById('sticker-top').innerHTML = ed.stickerTop;
+    document.getElementById('sticker-bottom').innerHTML = ed.stickerBottom;
 
-  // ---- music player (Spotify embeds — no audio files to host, fully licensed) ----
-  function spotifyEmbed(containerId, spotifyId, height){
-    document.getElementById(containerId).innerHTML =
-      `<iframe src="https://open.spotify.com/embed/track/${spotifyId}?utm_source=generator&theme=0&autoplay=1" width="100%" height="${height}" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    const tickerHTML = ed.ticker.map(t => `<span>${t}</span>`).join('');
+    document.getElementById('ticker-track').innerHTML = tickerHTML + tickerHTML;
+
+    document.getElementById('preview-eyebrow').textContent = ed.previewEyebrow;
+    document.getElementById('preview-title').innerHTML = ed.previewTitle;
+    document.getElementById('preview-sub').textContent = ed.previewSub;
+    document.getElementById('preview-grid').innerHTML = ed.preview.map(p => `
+      <div class="clip"><div class="thumb"><img src="${p.img}"></div><h3><span class="pin"></span>${p.title}</h3><p>${p.desc}</p></div>
+    `).join('');
+
+    document.getElementById('hero-read-btn').setAttribute('data-open-reader', ed.id);
+    const dl = document.getElementById('hero-download');
+    dl.href = ed.pdf;
+    dl.setAttribute('download', ed.filename);
+
+    document.querySelectorAll('.side-nav-item').forEach(el => el.classList.toggle('is-viewing', el.dataset.ed === ed.id));
+
+    if (ed.playlist && ed.playlist.length) renderPlayer(ed);
   }
-  function loadTrack(spotifyId){
-    spotifyEmbed('player-embed', spotifyId, 152);
-    spotifyEmbed('mini-player-embed', spotifyId, 80);
+
+  // ---- side nav: quick access to every past edition, by month ----
+  // Newest first, so this month's launch never gets buried once a future
+  // edition replaces it as the homepage's featured edition. Clicking a
+  // month brings back that whole edition's page — not just the PDF.
+  const sideList = document.getElementById('side-nav-list');
+  editions.slice().reverse().forEach(ed => {
+    const parts = ed.date.split('·');
+    const editionLabel = (parts[0] || '').trim();
+    const monthLabel = (parts[1] || ed.date).trim();
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.dataset.ed = ed.id;
+    item.className = 'side-nav-item' + (ed.current ? ' is-current' : '');
+    item.innerHTML = `
+      <img src="${ed.cover}" alt="">
+      <span class="m">${monthLabel}<small>${editionLabel}</small></span>
+    `;
+    item.addEventListener('click', () => {
+      renderEdition(ed);
+      document.getElementById('side-nav').classList.add('collapsed');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    sideList.appendChild(item);
+  });
+  document.getElementById('side-nav-tab').addEventListener('click', () => {
+    document.getElementById('side-nav').classList.toggle('collapsed');
+  });
+
+  // ---- music player (Spotify iFrame API — official, licensed, and lets us
+  // detect when a track ends so we can auto-advance to the next one) ----
+  let currentEd = null;
+  let currentTrackIndex = 0;
+  let pendingIndex = null;
+  let mainController = null;
+  let miniController = null;
+
+  function bothControllersReady(){ return !!(mainController && miniController); }
+
+  function highlightTrack(i){
+    document.querySelectorAll('#tracklist .track-btn').forEach((b, idx) => b.classList.toggle('active', idx === i));
   }
+
+  function playTrackAt(i){
+    if (!currentEd || !currentEd.playlist[i]) return;
+    if (!bothControllersReady()){ pendingIndex = i; return; }
+    currentTrackIndex = i;
+    highlightTrack(i);
+    const uri = 'spotify:track:' + currentEd.playlist[i].spotifyId;
+    mainController.loadUri(uri);
+    mainController.play();
+    miniController.loadUri(uri);
+    miniController.play();
+  }
+
+  function playNextTrack(){
+    if (!currentEd || !currentEd.playlist.length) return;
+    playTrackAt((currentTrackIndex + 1) % currentEd.playlist.length);
+  }
+
+  function tryInitialPlay(){
+    if (!bothControllersReady() || !currentEd) return;
+    playTrackAt(pendingIndex !== null ? pendingIndex : 0);
+    pendingIndex = null;
+  }
+
   function renderPlayer(ed){
+    currentEd = ed;
+    currentTrackIndex = 0;
     const list = document.getElementById('tracklist');
     list.innerHTML = '';
     ed.playlist.forEach((t, i) => {
@@ -679,17 +865,12 @@
       btn.type = 'button';
       btn.className = 'track-btn' + (i === 0 ? ' active' : '');
       btn.innerHTML = `<span class="n">${String(i + 1).padStart(2, '0')}</span> ${t.title}`;
-      btn.addEventListener('click', () => {
-        list.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        loadTrack(t.spotifyId);
-      });
+      btn.addEventListener('click', () => playTrackAt(i));
       li.appendChild(btn);
       list.appendChild(li);
     });
-    if (ed.playlist.length) loadTrack(ed.playlist[0].spotifyId);
-
     document.querySelectorAll('.player-tab').forEach(t => t.classList.toggle('active', t.dataset.ed === ed.id));
+    if (bothControllersReady()) playTrackAt(0);
   }
 
   const playerTabs = document.getElementById('player-tabs');
@@ -707,8 +888,34 @@
   }
   if (withPlaylist.length) {
     document.getElementById('mini-player').style.display = 'block';
-    renderPlayer(withPlaylist[withPlaylist.length - 1]);
   }
+
+  // ---- initial paint: show whichever edition is marked "current" ----
+  const currentEdition = editions.find(ed => ed.current) || editions[editions.length - 1];
+  renderEdition(currentEdition);
+
+  // Spotify's iFrame API loads asynchronously and calls window.onSpotifyIframeApiReady
+  // once ready — this shim (defined further up the page) queues callbacks so it
+  // works no matter which script finishes loading first.
+  whenSpotifyReady(function(IFrameAPI){
+    IFrameAPI.createController(document.getElementById('player-embed'), { width: '100%', height: '152' }, function(ctrl){
+      mainController = ctrl;
+      let wasPlaying = false;
+      ctrl.addListener('playback_update', e => {
+        const d = e.data;
+        if (!d.isPaused) wasPlaying = true;
+        if (wasPlaying && d.isPaused && d.position < 300 && d.duration > 0) {
+          wasPlaying = false;
+          playNextTrack();
+        }
+      });
+      tryInitialPlay();
+    });
+    IFrameAPI.createController(document.getElementById('mini-player-embed'), { width: '100%', height: '80' }, function(ctrl){
+      miniController = ctrl;
+      tryInitialPlay();
+    });
+  });
 
   // ---- reader modal ----
   const overlay = document.getElementById('reader-overlay');

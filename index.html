@@ -1,0 +1,324 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="assets/imgs-general/logo-hotmart-transparent.png">
+<title>CX Conecta — A revista de CX</title>
+<meta name="description" content="A revista de descontração do time de CX da Hotmart. Quiz exclusivo, horóscopo, detetives do CX, trilha sonora e muito mais — com aquele clima nostálgico dos anos 90/2000.">
+
+<!-- Open Graph / WhatsApp, Slack, iMessage, Telegram, etc. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CX Conecta">
+<meta property="og:title" content="CX Conecta — A revista de CX">
+<meta property="og:description" content="A revista de descontração do time de CX da Hotmart. Quiz exclusivo, horóscopo, detetives do CX, trilha sonora e muito mais — com aquele clima nostálgico dos anos 90/2000.">
+<meta property="og:url" content="https://rafaelcalaispenido.github.io/cxconecta/">
+<meta property="og:image" content="https://rafaelcalaispenido.github.io/cxconecta/assets/imgs-general/og-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter/X card (same image, some apps read this instead of Open Graph) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CX Conecta — A revista de CX">
+<meta name="twitter:description" content="A revista de descontração do time de CX da Hotmart, com aquele clima nostálgico dos anos 90/2000.">
+<meta name="twitter:image" content="https://rafaelcalaispenido.github.io/cxconecta/assets/imgs-general/og-preview.jpg">
+
+<link rel="stylesheet" href="assets/css/site.css">
+
+<body class="loading">
+
+  <div class="loader" id="page-loader">
+    <div class="loader-scanlines"></div>
+    <span class="loader-spark s1">✦</span>
+    <span class="loader-spark s2">✧</span>
+    <span class="loader-spark s3">✦</span>
+    <div class="loader-window">
+      <img class="loader-flame" src="assets/imgs-general/logo-hotmart-transparent.png" alt="">
+      <div class="loader-title script">CX <b>Conecta</b></div>
+
+      <form class="loader-gate" id="loader-gate">
+        <label class="loader-gate-label" for="loader-password">Acesso restrito · digite a senha</label>
+        <input class="loader-gate-input" id="loader-password" type="password" autocomplete="off" placeholder="••••••••••••">
+        <button class="btn btn-primary loader-gate-btn" type="submit">Entrar</button>
+        <div class="loader-gate-error" id="loader-gate-error">Senha incorreta. Tenta de novo!</div>
+      </form>
+
+      <div class="loader-progress" id="loader-progress" style="display:none;">
+        <div class="loader-bar"><div class="loader-bar-fill" id="loader-fill"></div></div>
+        <div class="loader-row">
+          <span class="loader-lcd" id="loader-pct">00%</span>
+          <span class="loader-blink">carregando edição<span class="cursor">_</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var PASSWORD = 'CxConecta@2026';
+      var loader = document.getElementById('page-loader');
+      var gate = document.getElementById('loader-gate');
+      var gateError = document.getElementById('loader-gate-error');
+      var passwordInput = document.getElementById('loader-password');
+      var progressWrap = document.getElementById('loader-progress');
+      var fill = document.getElementById('loader-fill');
+      var pct = document.getElementById('loader-pct');
+      var duration = 2200;
+
+      passwordInput.focus();
+
+      gate.addEventListener('submit', function(e){
+        e.preventDefault();
+        if (passwordInput.value === PASSWORD) {
+          gate.style.display = 'none';
+          progressWrap.style.display = 'block';
+          startLoading();
+        } else {
+          gateError.classList.add('show');
+          gate.classList.remove('shake');
+          void gate.offsetWidth;
+          gate.classList.add('shake');
+          passwordInput.value = '';
+          passwordInput.focus();
+        }
+      });
+
+      function startLoading(){
+        var start = performance.now();
+        var done = false;
+        function finish(){
+          if (done) return;
+          done = true;
+          fill.style.width = '100%';
+          pct.textContent = '100%';
+          loader.classList.add('hide');
+          document.body.classList.remove('loading');
+          setTimeout(function(){ loader.style.display = 'none'; }, 650);
+        }
+        function tick(now){
+          if (done) return;
+          var progress = Math.min((now - start) / duration, 1);
+          var pctVal = Math.round(progress * 100);
+          fill.style.width = pctVal + '%';
+          pct.textContent = (pctVal < 10 ? '0' : '') + pctVal + '%';
+          if (progress < 1) requestAnimationFrame(tick);
+          else finish();
+        }
+        requestAnimationFrame(tick);
+      }
+    })();
+  </script>
+
+  <script>
+    // Loaded early so the Spotify iFrame API (loaded async below) always has
+    // somewhere to report to, regardless of which script finishes first.
+    window.__spotifyReadyCallbacks = [];
+    window.onSpotifyIframeApiReady = function(IFrameAPI){
+      window.__spotifyAPI = IFrameAPI;
+      window.__spotifyReadyCallbacks.forEach(function(cb){ cb(IFrameAPI); });
+      window.__spotifyReadyCallbacks = [];
+    };
+    window.whenSpotifyReady = function(cb){
+      if (window.__spotifyAPI) cb(window.__spotifyAPI);
+      else window.__spotifyReadyCallbacks.push(cb);
+    };
+  </script>
+  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+
+  <div class="mini-player" id="mini-player" style="display:none;">
+    <div class="container">
+      <span class="mini-player-label">
+        <svg class="note-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="6" cy="18" r="3" fill="currentColor"/>
+          <circle cx="16" cy="16" r="3" fill="currentColor"/>
+          <path d="M9 18V6l10-2v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Tocando agora
+      </span>
+      <div class="mini-now">
+        <button class="mini-ctrl" id="mini-prev" type="button" title="Faixa anterior">⏮</button>
+        <button class="mini-ctrl play" id="mini-toggle" type="button" title="Pausar/tocar">⏸</button>
+        <button class="mini-ctrl" id="mini-next" type="button" title="Próxima faixa">⏭</button>
+        <div class="mini-track">
+          <strong id="mini-track-title">—</strong>
+          <span id="mini-track-artist">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="nav">
+    <div class="container">
+      <div class="brand">
+        <img class="flame" src="assets/imgs-general/logo-hotmart-transparent.png" alt="">
+        <span class="word script">CX <b>Conecta</b></span>
+      </div>
+      <nav class="links">
+        <a href="#edicoes">Edições</a>
+        <a href="#dentro">Nesta edição</a>
+        <a href="#trilha">Trilha sonora</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#autora">Autora</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge"><span class="dot"></span> <span id="edition-badge-text">Edição Nº1 · Julho / 2026</span></div>
+        <h1 class="headline"><span>A revista</span><span class="outline-orange">que traz</span><span>descontração</span><span>pro seu CX.</span></h1>
+        <p class="lead" id="edition-lead">Inspirada nas revistas teen dos anos 90, a <strong>CX Conecta</strong> traz o dia a dia de Customer Experience da Hotmart com muito humor: quiz exclusivo, horóscopo, detetives do CX e o mural das pérolas. Tudo isso pra lembrar que entender o todo muda o jeito de fazer CX.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary" id="hero-read-btn" data-open-reader="julho-2026">Ler edição agora</button>
+          <a class="btn btn-ghost" id="hero-download" download="Edição Julho.pdf">Baixar PDF</a>
+        </div>
+      </div>
+      <div class="cover-wrap">
+        <div class="sticker s1" id="sticker-top">Edição<br>de estreia!</div>
+        <div class="cover-card">
+          <img id="hero-cover" src="assets/img/Julho/capa-julho-2026.jpg" alt="Capa da revista CX Conecta - Julho 2026">
+        </div>
+        <div class="sticker s2" id="sticker-bottom">100%<br>CX</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <div class="ticker-track" id="ticker-track">
+      <span>TESTE EXCLUSIVO: QUAL SUA ERA NO PLANTÃO?</span>
+      <span>HORÓSCOPO: QUEM VAI SEXTAR NO HORÁRIO</span>
+      <span>DETETIVES DO CX: OS BASTIDORES DO SUPORTE</span>
+      <span>MURAL DAS PÉROLAS DO CX</span>
+      <span>POR DENTRO DO DEMAND GENERATION</span>
+      <span>TRILHA SONORA DO PLANTÃO</span>
+      <span>TESTE EXCLUSIVO: QUAL SUA ERA NO PLANTÃO?</span>
+      <span>HORÓSCOPO: QUEM VAI SEXTAR NO HORÁRIO</span>
+      <span>DETETIVES DO CX: OS BASTIDORES DO SUPORTE</span>
+      <span>MURAL DAS PÉROLAS DO CX</span>
+      <span>POR DENTRO DO DEMAND GENERATION</span>
+      <span>TRILHA SONORA DO PLANTÃO</span>
+    </div>
+  </div>
+
+  <section class="section" id="dentro">
+    <div class="container">
+      <span class="eyebrow" id="preview-eyebrow">Prévia da edição</span>
+      <h2 class="section-title" id="preview-title">O que tem <span class="hl">dentro</span> dessa CX Conecta</h2>
+      <p class="section-sub" id="preview-sub">Um mergulho nostálgico nos anos 90, com quinzena de seções pensadas pra descontrair (e ensinar) sobre a rotina de Customer Experience.</p>
+      <div class="preview-grid" id="preview-grid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="trilha">
+    <div class="container">
+      <span class="eyebrow">Toca essa</span>
+      <h2 class="section-title">Trilha sonora <span class="hl">da edição</span></h2>
+      <p class="section-sub">Cada edição tem a trilha sonora do artista/tema do mês. Nessa estreia, é claro, só podia ser Sandy &amp; Junior.</p>
+      <div class="player-tabs" id="player-tabs"></div>
+      <div class="player" id="music-player">
+        <div class="player-embed" id="player-embed"></div>
+        <ul class="tracklist" id="tracklist"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="edicoes">
+    <div class="container">
+      <div class="shelf">
+        <div class="shelf-head">
+          <h2>Todas as <span>edições</span></h2>
+          <p>Acompanhe aqui todas as edições da revista CX Conecta.</p>
+        </div>
+        <div id="editions-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sobre">
+    <div class="container about">
+      <div class="about-copy">
+        <span class="eyebrow">O projeto</span>
+        <h2 class="section-title" style="margin-bottom:16px;">Entender o todo <span class="hl">muda o jeito</span> de fazer CX</h2>
+        <p>CX Conecta nasceu dentro do time de Customer Experience da Hotmart como um jeito leve de aproximar squads, contar bastidores e comemorar a rotina de quem cuida da experiência de Creators e compradores todos os dias.</p>
+        <p>Cada edição mistura referências pop dos anos 90/2000 com histórias reais do time — sempre com muito humor e uma pitada de nostalgia.</p>
+      </div>
+      <div class="rainbow" aria-hidden="true">
+        <svg viewBox="0 0 300 220" fill="none">
+          <path d="M20 210 A130 130 0 0 1 280 210" stroke="#C43A10" stroke-width="26"/>
+          <path d="M46 210 A104 104 0 0 1 254 210" stroke="var(--orange)" stroke-width="26" style="stroke:#FE4D19"/>
+          <path d="M72 210 A78 78 0 0 1 228 210" stroke="#FFC93C" stroke-width="26"/>
+          <path d="M98 210 A52 52 0 0 1 202 210" stroke="#4F9DA6" stroke-width="26"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="autora">
+    <div class="container autora-grid">
+      <div class="autora-photo-wrap">
+        <div class="autora-photo">
+          <img src="assets/imgs-general/autora-gaby.jpg" alt="Gaby, autora da CX Conecta">
+        </div>
+        <div class="sticker autora-sticker">Editora-<br>chefe</div>
+      </div>
+      <div class="autora-copy">
+        <span class="eyebrow">Quem escreve</span>
+        <h2 class="section-title" style="margin-bottom:16px;">Autora</h2>
+        <p>Prazer, sou a Gaby! Moro em "Tão, Tão Distante" (mais conhecida como região do Vale do Aço). Sou de CX e estou na Hotmart há quase 1 ano — uuhuu! Sou super gente boa e amo um bom bate-papo, então se me vir no chat, me dá um oi! Minha missão é ajudar e fazer a diferença no dia a dia de alguém.</p>
+        <p>E pra quem está se perguntando de onde surgiu a Revista CX, eu garanto: não foi das vozes da minha cabeça! Até porque a gente está meio brigado e elas não estão colaborando muito ultimamente, kkkk.</p>
+        <p>A gente em CX vive na correria, mas a revista surgiu pra nos lembrar que por trás de todo número tem uma pessoa. Ela é a nossa ferramenta pra <strong>humanizar a rotina</strong>, conectar os times e trocar dicas reais de como encantar o cliente na prática. A CX Conecta nasceu daquela curiosidade saudável de saber o que acontece no dia a dia dos outros times, e entender como o nosso trabalho impacta o deles (e vice-versa!). E pra trazer os dados direto da fonte, entrevistamos os nossos próprios agentes, que abriram a caixa-preta da rotina pra mostrar como a mágica acontece.</p>
+        <p>No fim das contas, o grande desejo dessa revista é trazer de volta aquele quentinho no coração na hora de atender — nos lembrando todos os dias que <strong>entender o todo muda o jeito de fazer CX</strong>!</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="side-nav collapsed" id="side-nav">
+    <button class="side-nav-tab" id="side-nav-tab" type="button">Edições por mês</button>
+    <div class="side-nav-panel">
+      <span class="side-nav-title">Edições por mês</span>
+      <div id="side-nav-list"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="foot-top">
+        <div class="foot-brand"><img src="assets/imgs-general/logo-hotmart-transparent.png" alt="Hotmart"> CX Conecta</div>
+        <div class="foot-links">
+          <a href="#edicoes">Edições</a>
+          <a href="#dentro">Nesta edição</a>
+          <a href="#trilha">Trilha sonora</a>
+          <a href="#sobre">Sobre o projeto</a>
+          <a href="#autora">Autora</a>
+        </div>
+      </div>
+      <div class="fine">CX Conecta é um projeto interno do time de Customer Experience da Hotmart. Todas as marcas e imagens citadas pertencem aos seus respectivos detentores, usadas aqui com fins de entretenimento interno.</div>
+    </div>
+  </footer>
+
+  <div class="reader-overlay" id="reader-overlay">
+    <div class="reader-panel">
+      <div class="reader-bar">
+        <strong id="reader-title">CX Conecta</strong>
+        <div class="reader-actions">
+          <a class="icon-btn" id="reader-download" download title="Baixar PDF">⬇</a>
+          <div class="reader-zoom">
+            <button class="icon-btn" id="reader-zoom-out" title="Diminuir zoom">－</button>
+            <span class="reader-zoom-label" id="reader-zoom-label">100%</span>
+            <button class="icon-btn" id="reader-zoom-in" title="Aumentar zoom">＋</button>
+          </div>
+          <button class="icon-btn" id="reader-fullscreen" title="Tela cheia">⛶</button>
+          <button class="icon-btn" id="reader-close" title="Fechar">✕</button>
+        </div>
+      </div>
+      <div class="reader-body" id="reader-body"></div>
+    </div>
+  </div>
+
+  <!-- Biblioteca do efeito de virar página (MIT, sem dependências) -->
+  <script src="assets/js/page-flip.browser.js"></script>
+
+  <!-- Dados de cada edição: um arquivo pequeno por mês. Para adicionar uma
+       edição nova, crie um novo arquivo em assets/js/editions/ e inclua-o
+       aqui com uma linha nova — nunca precisa editar os arquivos antigos. -->
+  <script src="assets/js/editions/2026-07-sandy-junior.js"></script>
+
+  <!-- Lógica do site (renderização das edições, player, leitor 3D, etc.) -->
+  <script src="assets/js/site.js"></script>
